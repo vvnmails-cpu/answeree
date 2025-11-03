@@ -1,1 +1,62 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Archive - Answeree Digest</title><link rel="icon" href="/favicon.png"/><style>:root{--bg:#f1f5f9;--muted:#6b7280}body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);margin:0;color:#0f172a}.container{max-width:980px;margin:auto;padding:20px}header{text-align:center;padding:28px}h1{margin:0 0 6px}section{display:grid;grid-template-columns:1fr;gap:14px}@media(min-width:768px){section{grid-template-columns:repeat(2,1fr)}}.card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(12,18,26,0.06)}.meta{color:var(--muted);font-size:13px}.btn{display:inline-block;margin-top:12px;padding:8px 12px;border-radius:8px;background:#eef2ff;color:#3730a3;text-decoration:none;font-weight:700}</style></head><body><div class="container"><header><h1>Archive</h1><p class="meta">Past daily digests</p></header><section id="archive"></section></div><script>async function loadIndex(){try{const res=await fetch('/data/index.json');if(!res.ok)return;const j=await res.json();const sec=document.getElementById('archive');j.dates.forEach(d=>{const c=document.createElement('div');c.className='card';c.innerHTML=`<div class='meta'>${new Date(d).toDateString()}</div><h3 style='margin:8px 0'>${d}</h3><p class='meta'>Top categories: ${j.meta && j.meta[d] ? j.meta[d].join(', ') : 'General'}</p><a class='btn' href='/content/${d}/'>Read Full Digest</a>`;sec.appendChild(c)});}catch(e){console.error(e);} }loadIndex();</script></body></html>
+<script>
+  const archiveList = document.getElementById('archive-list');
+  const digestContainer = document.getElementById('digest-container');
+
+  async function loadArchiveList() {
+    try {
+      const res = await fetch('data/archive_index.json');
+      const dates = await res.json();
+
+      if (!dates.length) {
+        archiveList.innerHTML = "<p style='text-align:center;'>No past digests found.</p>";
+        return;
+      }
+
+      archiveList.innerHTML = "<h2>Select a Date</h2>";
+      dates.forEach(date => {
+        const item = document.createElement('div');
+        item.className = 'archive-item';
+        item.textContent = date;
+        item.onclick = () => loadDigest(date);
+        archiveList.appendChild(item);
+      });
+    } catch (err) {
+      console.error(err);
+      archiveList.innerHTML = "<p style='color:red;text-align:center;'>⚠️ Failed to load archive list.</p>";
+    }
+  }
+
+  async function loadDigest(date) {
+    digestContainer.innerHTML = '<p style="text-align:center;">Loading...</p>';
+    try {
+      const res = await fetch(`data/${date}.json`);
+      const posts = await res.json();
+
+      archiveList.style.display = 'none';
+      digestContainer.innerHTML = `
+        <a class="back-btn" href="#" onclick="resetView(event)">← Back</a>
+      `;
+
+      posts.forEach(post => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <h3>${post.title}</h3>
+          <p>${post.summary}</p>
+          <a href="${post.url}" target="_blank">Read more →</a>
+        `;
+        digestContainer.appendChild(card);
+      });
+    } catch (err) {
+      digestContainer.innerHTML = '<p style="color:red;text-align:center;">Failed to load this digest.</p>';
+    }
+  }
+
+  function resetView(event) {
+    event.preventDefault();
+    digestContainer.innerHTML = '';
+    archiveList.style.display = 'block';
+  }
+
+  loadArchiveList();
+</script>
