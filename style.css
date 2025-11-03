@@ -6,7 +6,7 @@
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:'Alegreya Serif', serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
-.topbar{position:fixed;top:0;left:0;right:0;backdrop-filter: blur(6px);background:rgba(230,255,250,0.9);box-shadow:0 6px 18px rgba(2,6,23,0.06);z-index:1000}
+.topbar{position:fixed;top:0;left:0;right:0;backdrop-filter: blur(6px);background:rgba(229,231,235,0.9);box-shadow:0 6px 18px rgba(2,6,23,0.06);z-index:1000}
 .topbar-inner{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;gap:12px}
 .logo{height:44px}
 .title-wrap{text-align:center}
