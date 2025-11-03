@@ -1,62 +1,159 @@
-<script>
-  const archiveList = document.getElementById('archive-list');
-  const digestContainer = document.getElementById('digest-container');
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Answeree Digest Archive</title>
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: system-ui, sans-serif;
+      margin: 0;
+      padding: 0;
+      transition: 0.3s ease;
+    }
+    :root {
+      --bg: #0f0f0f;
+      --text: #eaeaea;
+      --card: #1a1a1a;
+      --accent: #00bfa5;
+    }
+    .container {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    header img {
+      height: 40px;
+    }
+    .archive-item {
+      background: var(--card);
+      padding: 1rem;
+      margin: 0.5rem 0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .archive-item:hover {
+      background: #252525;
+    }
+    .card {
+      background: var(--card);
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    .back-btn {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+    #ad-container {
+      background: #1e1e1e;
+      border-radius: 10px;
+      text-align: center;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      color: gray;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="answeree-logo.png" alt="Answeree Logo">
+      <h2>Past Digests</h2>
+    </header>
 
-  async function loadArchiveList() {
-    try {
-      const res = await fetch('data/archive_index.json');
-      const dates = await res.json();
+    <div id="ad-container">[Ad placeholder]</div>
 
-      if (!dates.length) {
-        archiveList.innerHTML = "<p style='text-align:center;'>No past digests found.</p>";
-        return;
+    <div id="archive-list"></div>
+    <div id="digest-container"></div>
+
+    <footer>Made with ❤️ by Answeree Team</footer>
+  </div>
+
+  <script>
+    const archiveList = document.getElementById('archive-list');
+    const digestContainer = document.getElementById('digest-container');
+
+    async function loadArchiveList() {
+      try {
+        const res = await fetch('data/archive_index.json');
+        const dates = await res.json();
+
+        if (!dates.length) {
+          archiveList.innerHTML = "<p style='text-align:center;'>No past digests found.</p>";
+          return;
+        }
+
+        archiveList.innerHTML = "<h3>Select a Date</h3>";
+        dates.forEach(date => {
+          const item = document.createElement('div');
+          item.className = 'archive-item';
+          item.textContent = date;
+          item.onclick = () => loadDigest(date);
+          archiveList.appendChild(item);
+        });
+      } catch (err) {
+        console.error(err);
+        archiveList.innerHTML = "<p style='color:red;text-align:center;'>⚠️ Failed to load archive list.</p>";
       }
-
-      archiveList.innerHTML = "<h2>Select a Date</h2>";
-      dates.forEach(date => {
-        const item = document.createElement('div');
-        item.className = 'archive-item';
-        item.textContent = date;
-        item.onclick = () => loadDigest(date);
-        archiveList.appendChild(item);
-      });
-    } catch (err) {
-      console.error(err);
-      archiveList.innerHTML = "<p style='color:red;text-align:center;'>⚠️ Failed to load archive list.</p>";
     }
-  }
 
-  async function loadDigest(date) {
-    digestContainer.innerHTML = '<p style="text-align:center;">Loading...</p>';
-    try {
-      const res = await fetch(`data/${date}.json`);
-      const posts = await res.json();
+    async function loadDigest(date) {
+      digestContainer.innerHTML = '<p style="text-align:center;">Loading...</p>';
+      try {
+        const res = await fetch(`data/${date}.json`);
+        const posts = await res.json();
 
-      archiveList.style.display = 'none';
-      digestContainer.innerHTML = `
-        <a class="back-btn" href="#" onclick="resetView(event)">← Back</a>
-      `;
-
-      posts.forEach(post => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <h3>${post.title}</h3>
-          <p>${post.summary}</p>
-          <a href="${post.url}" target="_blank">Read more →</a>
+        archiveList.style.display = 'none';
+        digestContainer.innerHTML = `
+          <a class="back-btn" href="#" onclick="resetView(event)">← Back</a>
         `;
-        digestContainer.appendChild(card);
-      });
-    } catch (err) {
-      digestContainer.innerHTML = '<p style="color:red;text-align:center;">Failed to load this digest.</p>';
+
+        posts.forEach(post => {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <h3>${post.title}</h3>
+            <p>${post.summary}</p>
+            <a href="${post.url}" target="_blank">Read more →</a>
+          `;
+          digestContainer.appendChild(card);
+        });
+      } catch (err) {
+        digestContainer.innerHTML = '<p style="color:red;text-align:center;">Failed to load this digest.</p>';
+      }
     }
-  }
 
-  function resetView(event) {
-    event.preventDefault();
-    digestContainer.innerHTML = '';
-    archiveList.style.display = 'block';
-  }
+    function resetView(event) {
+      event.preventDefault();
+      digestContainer.innerHTML = '';
+      archiveList.style.display = 'block';
+    }
 
-  loadArchiveList();
-</script>
+    loadArchiveList();
+  </script>
+</body>
+</html>
