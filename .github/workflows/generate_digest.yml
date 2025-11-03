@@ -22,3 +22,5 @@ jobs:
           git add data/
           git commit -m "Auto update: ${date}"
           git push
+- name: Add all changes
+  run: git add .
