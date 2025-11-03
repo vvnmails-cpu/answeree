@@ -1,7 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Alegreya+Serif:wght@400;700&display=swap');
 :root{
-  --bg:#f0f8ff; --text:#042f2e; --card:#ffffff; --muted:#52606d; --accent:#f0f8ff;
+  --bg:#f0f8ff; --text:#042f2e; --card:#ffffff; --muted:#52606d; --accent:#daede9;
   --dark-bg:#0b0f12; --dark-card:#0f1720; --dark-text:#e6f7f4; --dark-muted:#9aa8a6;
 }
 *{box-sizing:border-box}
