@@ -1,0 +1,26 @@
+[
+  {
+    "source": "Reddit",
+    "category": "Tech",
+    "votes": 121,
+    "title": "Edge AI trend 2025-11-01",
+    "summary": "Edge AI reduces latency and improves privacy.",
+    "url": "https://reddit.com/"
+  },
+  {
+    "source": "Hacker News",
+    "category": "AI",
+    "votes": 96,
+    "title": "Small models for production 2025-11-01",
+    "summary": "Discussion on tiny models for deployed apps.",
+    "url": "https://news.ycombinator.com/"
+  },
+  {
+    "source": "Stack Overflow",
+    "category": "Science",
+    "votes": 41,
+    "title": "Memory leak fixes 2025-11-01",
+    "summary": "How to patch memory leaks in long-running apps.",
+    "url": "https://stackoverflow.com/"
+  }
+]
