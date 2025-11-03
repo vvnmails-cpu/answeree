@@ -17,8 +17,10 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       - run: |
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
-          git add data/
-          git commit -m "Auto update: ${date}"
-          git push
+          - name: Commit and push changes safely
+  run: |
+    git config user.email "actions@github.com"
+    git config user.name "GitHub Actions"
+    git add .
+    git diff-index --quiet HEAD || git commit -m "Automated update"
+    git push || true
