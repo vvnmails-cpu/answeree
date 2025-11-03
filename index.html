@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Daily Knowledge Digest</title>
+  <link rel="icon" href="assets/favicon.png" type="image/png"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header>
+    <img src="assets/answeree-logo.png" alt="Answeree" class="logo"/>
+    <div class="title-block">
+      <h1>Daily Knowledge Digest</h1>
+      <p class="tagline">Top answers from across the web, summarized for you.</p>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="category-bar">
+      <div class="categories" id="categories">
+        <button class="category active" data-cat="all">All</button>
+        <button class="category" data-cat="Tech">Tech</button>
+        <button class="category" data-cat="AI">AI</button>
+        <button class="category" data-cat="Science">Science</button>
+        <button class="category" data-cat="Lifestyle">Lifestyle</button>
+      </div>
+      <div class="pagination" id="paginationDesktop">
+        <button class="pager-btn" id="prevBtn">◀ Prev</button>
+        <div id="currentDate">Loading…</div>
+        <button class="pager-btn" id="nextBtn">Next ▶</button>
+      </div>
+    </div>
+
+    <main id="cardContainer" class="card-container" aria-live="polite"></main>
+
+    <section class="subscribe-section">
+      <h3>Subscribe for daily digests</h3>
+      <form id="subscribeForm" action="https://docs.google.com/forms/d/e/f6kr2pTXw4cpxcWq7/formResponse" method="POST" target="_blank" onsubmit="return handleSubscribe(this)">
+        <input type="email" name="entry.0" id="subEmail" placeholder="Enter your email to get daily digests" required />
+        <button type="submit">Subscribe</button>
+      </form>
+      <p id="subscribeMessage"></p>
+    </section>
+
+    <div style="text-align:center;margin-top:8px">
+      <a href="archive.html" class="view-btn">View Past Digests →</a>
+    </div>
+
+    <footer>Made with ❤️ by Answeree Team</footer>
+  </div>
+
+<script src="script.js"></script>
+</body>
+</html>
