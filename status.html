@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Status - Daily Knowledge Digest</title>
+  <link rel="stylesheet" href="status.css">
+  <script defer src="status.js"></script>
+</head>
+<body>
+  <header class="header">
+    <img src="../answeree-logo.png" alt="Answeree Logo" class="logo">
+    <h1>System Status</h1>
+    <div class="theme-toggle" id="theme-toggle">🌙</div>
+  </header>
+
+  <main class="status-container">
+    <div class="status-card">
+      <h2>Daily Knowledge Digest</h2>
+      <p class="tagline">Top answers summarized from Reddit, Quora, Hacker News, and Stack Overflow.</p>
+      <div id="status-info" class="status-info">
+        <div class="progress-bar">
+          <div class="progress" id="progress"></div>
+        </div>
+        <div class="details">
+          <p><strong>Date:</strong> <span id="status-date">Loading...</span></p>
+          <p><strong>Sources:</strong> <span id="status-sources">Loading...</span></p>
+          <p><strong>Summary Count:</strong> <span id="status-count">Loading...</span></p>
+          <p><strong>Last Updated:</strong> <span id="status-updated">Loading...</span></p>
+        </div>
+        <button id="refetch" class="refetch-btn">Refetch Data</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>Made with ❤️ by Answeree Team</footer>
+</body>
+</html>
