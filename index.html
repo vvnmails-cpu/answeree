@@ -1,73 +1,192 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Answeree Digest — Daily Knowledge Digest</title>
-  <link rel="icon" href="/favicon.png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Answeree Digest</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <base href="https://vvnmails-cpu.github.io/answeree/">
+
   <style>
-    :root{--bg:#f1f5f9;--card:#ffffff;--muted:#6b7280;--accent:#0ea5e9;}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;background:var(--bg);color:#0f172a;}
-    .container{max-width:980px;margin:0 auto;padding:20px}
-    header{text-align:center;padding:28px 10px 12px}
-    header img.logo{height:72px}
-    h1{margin:12px 0 6px;font-size:28px}
-    .lead{color:var(--muted)}
-    .chips{display:flex;gap:8px;justify-content:center;margin-top:16px;flex-wrap:wrap}
-    .chip{padding:8px 14px;border-radius:999px;background:white;border:1px solid rgba(2,6,23,0.04);cursor:pointer;font-weight:600;color:var(--muted)}
-    .chip.active{background:var(--accent);color:white}
-    .ad{background:linear-gradient(90deg, rgba(2,6,23,0.02), rgba(2,6,23,0.01));padding:12px;border-radius:12px;text-align:center;color:var(--muted);margin:18px 0}
-    .feed{display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px}
-    .card{background:var(--card);border-radius:16px;padding:18px;box-shadow:0 6px 18px rgba(12,18,26,0.06);border:1px solid rgba(2,6,23,0.04)}
-    .meta{color:var(--muted);font-size:13px}
-    .category{display:inline-block;padding:6px 10px;border-radius:999px;background:#f1f5f9;color:var(--muted);font-size:12px}
-    .title{font-size:18px;margin:10px 0 8px}
-    .summary{color:var(--muted);line-height:1.5}
-    .btn{display:inline-block;margin-top:12px;padding:8px 12px;border-radius:10px;background:#eef2ff;color:#3730a3;text-decoration:none;font-weight:700}
-    footer{text-align:center;padding:28px 10px;color:var(--muted)}
-    .loader{display:block;margin:18px auto;border-radius:50%;width:36px;height:36px;border:4px solid #eee;border-top-color:var(--accent);animation:spin 1s linear infinite}
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @media(min-width:768px){.feed{grid-template-columns:repeat(2,1fr)} header img.logo{height:92px} h1{font-size:34px}}
+    body {
+      font-family: system-ui, sans-serif;
+      background-color: #0d1117;
+      color: #e6edf3;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+      border-bottom: 1px solid #30363d;
+    }
+
+    .logo {
+      height: 60px;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin: 0;
+    }
+
+    .categories {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 20px auto;
+      max-width: 90%;
+    }
+
+    .categories button {
+      background: #161b22;
+      border: 1px solid #30363d;
+      color: #e6edf3;
+      padding: 6px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .categories button:hover,
+    .categories button.active {
+      background: #238636;
+      border-color: #238636;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+      padding: 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background-color: #161b22;
+      border: 1px solid #30363d;
+      padding: 20px;
+      border-radius: 12px;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.02);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #58a6ff;
+    }
+
+    .card a {
+      color: #58a6ff;
+      text-decoration: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #8b949e;
+      border-top: 1px solid #30363d;
+      margin-top: 40px;
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <img src="/answeree-logo.png" class="logo" alt="Answeree Digest logo" />
-      <h1>Daily Knowledge Digest</h1>
-      <div class="lead">Top answers from Reddit, Hacker News, Quora and Stack Overflow — summarized and categorized.</div>
-      <div class="chips" id="filters">
-        <div class="chip active" data-cat="All">All</div>
-        <div class="chip" data-cat="Tech">Tech</div>
-        <div class="chip" data-cat="Science">Science</div>
-        <div class="chip" data-cat="Lifestyle">Lifestyle</div>
-        <div class="chip" data-cat="General">General</div>
-      </div>
-    </header>
-    <div class="ad">Ad Placeholder — Top Banner (ca-pub-XXXXXX • slot 1111111111)</div>
-    <main id="feed" class="feed" aria-live="polite"></main>
-    <div id="loading" style="display:none;text-align:center;margin:18px 0">
-      <div class="loader" role="status" aria-label="Loading"></div>
-    </div>
-    <footer>Made with ❤️ by Answeree Team</footer>
+
+  <header class="header">
+    <img src="answeree-logo.png" alt="Answeree Logo" class="logo" />
+    <h1>Answeree Digest</h1>
+  </header>
+
+  <div class="categories" id="categoryFilter">
+    <button class="active" data-category="all">All</button>
+    <button data-category="tech">Tech</button>
+    <button data-category="ai">AI</button>
+    <button data-category="lifestyle">Lifestyle</button>
+    <button data-category="science">Science</button>
+    <button data-category="business">Business</button>
   </div>
-<script>
-const dataDir = '/data';
-let dates = [];
-let idx = 0;
-let loading = false;
-let activeCategory = 'All';
-function el(tag, attrs={}, html=''){ const e=document.createElement(tag); for(const k in attrs) e.setAttribute(k, attrs[k]); if(html) e.innerHTML=html; return e; }
-function truncate(s,n=260){ if(!s) return ''; return s.length<=n?s:s.slice(0,n).split(' ').slice(0,-1).join(' ')+'...' }
-async function fetchDatesIndex(){ try{ const res=await fetch(dataDir + '/index.json'); if(!res.ok) return []; const obj=await res.json(); return obj.dates||[]; }catch(e){ console.error('fetchDatesIndex',e); return []; } }
-async function loadNextDate(){ if(loading) return; if(idx>=dates.length) return; loading=true; document.getElementById('loading').style.display='block'; const date=dates[idx++]; try{ const res=await fetch(`${dataDir}/${date}.json`); if(!res.ok){ loading=false; document.getElementById('loading').style.display='none'; return; } const obj=await res.json(); renderDate(obj); }catch(e){ console.error('loadNextDate',e);} loading=false; document.getElementById('loading').style.display='none'; }
-function renderDate(obj){ const feed=document.getElementById('feed'); const headerCard=el('div', {'class':'card', 'data-meta':'date-header'}); headerCard.innerHTML = `<div class="meta">${new Date(obj.date).toDateString()}</div><div style="margin-top:8px;font-weight:700">Trending: ${obj.trending && obj.trending.length? obj.trending.slice(0,3).join(', '): 'General'}</div>`; feed.appendChild(headerCard); (obj.items||[]).forEach((it,i)=>{ const cat = it.category || 'General'; const card = el('article', {'class':'card', 'data-category': cat}); card.innerHTML = ` <div class="meta">${it.source || ''} • <span class="category">${cat}</span></div> <div class="title"><a href="${it.url || '#'}" target="_blank" rel="noopener noreferrer">${escapeHtml(it.title)}</a></div> <div class="summary">${escapeHtml(truncate(it.summary || it.title, 320))}</div> <a class="btn" href="${it.url || '#'}" target="_blank">View Source</a> `; const childrenCount = feed.querySelectorAll('.card[data-meta!="date-header"], .card').length; feed.appendChild(card); if(childrenCount % 3 === 0){ const ad = el('div', {'class':'card'}); ad.innerHTML = `<div class="ad">Inline Ad Placeholder — ca-pub-XXXXXX • slot 2222222222</div>`; feed.appendChild(ad); } }); applyFilter(); }
-function escapeHtml(s){ if(!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function applyFilter(){ document.querySelectorAll('[data-category]').forEach(elm=>{ const cat=elm.getAttribute('data-category')||'General'; if(activeCategory==='All'||activeCategory===cat) elm.style.display=''; else elm.style.display='none'; }); }
-document.getElementById('filters').addEventListener('click',(e)=>{ const btn=e.target.closest('.chip'); if(!btn) return; document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active')); btn.classList.add('active'); activeCategory=btn.dataset.cat; applyFilter(); });
-window.addEventListener('scroll',()=>{ if(loading) return; const nearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 600; if(nearBottom){ loadNextDate(); } });
-(async function(){ dates = await fetchDatesIndex(); idx = 0; await loadNextDate(); await loadNextDate(); })();
-</script>
+
+  <main id="digest-container" class="card-container"></main>
+
+  <footer>
+    <p>Made with ❤️ by Answeree Team</p>
+  </footer>
+
+  <script>
+    const API_PATH = 'data/index.json';
+    let allPosts = [];
+    let loadedCount = 0;
+    const LOAD_STEP = 6;
+    let activeCategory = 'all';
+
+    async function fetchPosts() {
+      try {
+        const res = await fetch(API_PATH);
+        const data = await res.json();
+        allPosts = data;
+        renderPosts(true);
+      } catch (e) {
+        document.getElementById('digest-container').innerHTML =
+          '<p style="text-align:center;color:red;">⚠️ Failed to load posts.</p>';
+        console.error(e);
+      }
+    }
+
+    function renderPosts(reset = false) {
+      const container = document.getElementById('digest-container');
+      if (reset) {
+        container.innerHTML = '';
+        loadedCount = 0;
+      }
+
+      const filtered = activeCategory === 'all'
+        ? allPosts
+        : allPosts.filter(p => (p.category || '').toLowerCase() === activeCategory);
+
+      const toRender = filtered.slice(loadedCount, loadedCount + LOAD_STEP);
+
+      toRender.forEach(post => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <h3>${post.title}</h3>
+          <p>${post.summary}</p>
+          <a href="${post.url}" target="_blank">Read more →</a>
+        `;
+        container.appendChild(card);
+      });
+
+      loadedCount += toRender.length;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+        renderPosts();
+      }
+    });
+
+    document.getElementById('categoryFilter').addEventListener('click', (e) => {
+      if (e.target.tagName === 'BUTTON') {
+        document.querySelectorAll('.categories button').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        activeCategory = e.target.dataset.category;
+        renderPosts(true);
+      }
+    });
+
+    fetchPosts();
+  </script>
+
 </body>
 </html>
